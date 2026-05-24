@@ -172,7 +172,8 @@ async function sendCallUs(to) {
       to,
       type: "text",
       text: {
-        body: "8839212661"
+       body:
+  "Thank you for contacting Zolterra.\n\nFor further assistance, please contact:\n\nUmesh Sharma\n+91 8839212661"
       }
     },
     {
