@@ -8,6 +8,8 @@ const VERIFY_TOKEN = process.env.VERIFY_TOKEN;
 const ACCESS_TOKEN = process.env.ACCESS_TOKEN;
 const PHONE_NUMBER_ID = process.env.PHONE_NUMBER_ID;
 
+const pendingVisits = new Set();
+
 const TRIGGER_PHRASE =
   "hello, i'm interested in your project. please share complete details.";
 
