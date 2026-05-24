@@ -239,38 +239,6 @@ app.post("/webhook", async (req, res) => {
     await sendMainButtons(from);
   }
     }
-  const text = (message.text?.body || "").toLowerCase().trim();
-
-  const keywordMatch = KEYWORDS.some((k) =>
-    text.includes(k.toLowerCase())
-  );
-
-  if (
-    text === TRIGGER_PHRASE ||
-    keywordMatch
-  ) {
-    await sendMainButtons(from);
-  } else {
-    await axios.post(
-      `https://graph.facebook.com/v23.0/${PHONE_NUMBER_ID}/messages`,
-      {
-        messaging_product: "whatsapp",
-        to: from,
-        type: "text",
-        text: {
-          body:
-            "Thank you.\n\nYour site visit request has been received.\n\nWe will contact you shortly to confirm the appointment."
-        }
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${ACCESS_TOKEN}`,
-          "Content-Type": "application/json"
-        }
-      }
-    );
-  }
-}
 
     if (message.type === "interactive") {
       const buttonId =
