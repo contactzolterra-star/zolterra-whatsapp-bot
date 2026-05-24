@@ -20,20 +20,6 @@ const pendingVisits = new Set();
 const TRIGGER_PHRASE =
   "hello, i'm interested in your project. please share complete details.";
 
-const KEYWORDS = [
-  "details",
-  "detail",
-  "project",
-  "project details",
-  "brochure",
-  "price",
-  "pricing",
-  "location",
-  "investment",
-  "interested",
-  "interest"
-];
-
 async function getSheetsClient() {
   const auth = new google.auth.GoogleAuth({
     credentials: {
@@ -252,15 +238,8 @@ app.post("/webhook", async (req, res) => {
     return res.sendStatus(200);
   }
 
-  const keywordMatch = KEYWORDS.some((k) =>
-    text.includes(k.toLowerCase())
-  );
-
-  if (
-    text === TRIGGER_PHRASE ||
-    keywordMatch
-  ) {
-    await sendMainButtons(from);
+  if (text === TRIGGER_PHRASE) {
+  await sendMainButtons(from);
   }
     }
 
@@ -296,3 +275,4 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server running on ${PORT}`);
 });
+
