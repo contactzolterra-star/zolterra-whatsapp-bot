@@ -210,6 +210,24 @@ async function sendCallUs(to) {
     }
   );
 }
+async function testGoogleSheet() {
+  const sheets = await getSheetsClient();
+
+  await sheets.spreadsheets.values.append({
+    spreadsheetId: GOOGLE_SHEET_ID,
+    range: `${GOOGLE_SHEET_NAME}!A:E`,
+    valueInputOption: "RAW",
+    requestBody: {
+      values: [[
+        "TEST",
+        new Date().toISOString(),
+        new Date().toISOString(),
+        "META_AD_ASSUMED",
+        "YES"
+      ]]
+    }
+  });
+}
 app.post("/webhook", async (req, res) => {
   try {
     const entry = req.body?.entry?.[0];
@@ -293,6 +311,14 @@ app.post("/webhook", async (req, res) => {
 
 const PORT = process.env.PORT || 3000;
 
-app.listen(PORT, () => {
+app.listen(PORT, async () => {
   console.log(`Server running on ${PORT}`);
+
+  try {
+    await testGoogleSheet();
+    console.log("Google Sheet Test Success");
+  } catch (err) {
+    console.error("Google Sheet Test Failed");
+    console.error(err?.message || err);
+  }
 });
