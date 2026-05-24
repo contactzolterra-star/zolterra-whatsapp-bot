@@ -1,5 +1,55 @@
 const express = require("express");
 const axios = require("axios");
+const { google } = require("googleapis");
+
+const app = express();
+app.use(express.json());
+
+const ACCESS_TOKEN = process.env.ACCESS_TOKEN;
+const VERIFY_TOKEN = process.env.VERIFY_TOKEN;
+const PHONE_NUMBER_ID = process.env.PHONE_NUMBER_ID;
+
+const GOOGLE_CLIENT_EMAIL = process.env.GOOGLE_CLIENT_EMAIL;
+const GOOGLE_PRIVATE_KEY =
+  process.env.GOOGLE_PRIVATE_KEY?.replace(/\\n/g, "\n");
+const GOOGLE_SHEET_ID = process.env.GOOGLE_SHEET_ID;
+const GOOGLE_SHEET_NAME = process.env.GOOGLE_SHEET_NAME;
+
+const pendingVisits = new Set();
+
+const TRIGGER_PHRASE =
+  "hello, i'm interested in your project. please share complete details.";
+
+const KEYWORDS = [
+  "details",
+  "detail",
+  "project",
+  "project details",
+  "brochure",
+  "price",
+  "pricing",
+  "location",
+  "investment",
+  "interested",
+  "interest"
+];
+
+async function getSheetsClient() {
+  const auth = new google.auth.GoogleAuth({
+    credentials: {
+      client_email: GOOGLE_CLIENT_EMAIL,
+      private_key: GOOGLE_PRIVATE_KEY
+    },
+    scopes: [
+      "https://www.googleapis.com/auth/spreadsheets"
+    ]
+  });
+
+  return google.sheets({
+    version: "v4",
+    auth
+  });
+}
 
 const app = express();
 app.use(express.json());
